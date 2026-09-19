@@ -1,0 +1,15 @@
+{
+  "name": "huanji-skill-exchange",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A full-stack skill exchange platform built with Node.js and SQLite.",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test": "node --test tests/full-stack.test.mjs"
+  },
+  "engines": {
+    "node": ">=24.0.0"
+  }
+}
