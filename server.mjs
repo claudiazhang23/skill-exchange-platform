@@ -14,6 +14,12 @@ const demoPassword = "demo1234";
 const staticFiles = new Map([
   ["/", ["index.html", "text/html; charset=utf-8"]],
   ["/index.html", ["index.html", "text/html; charset=utf-8"]],
+  ["/discover", ["index.html", "text/html; charset=utf-8"]],
+  ["/match", ["index.html", "text/html; charset=utf-8"]],
+  ["/messages", ["index.html", "text/html; charset=utf-8"]],
+  ["/profile", ["index.html", "text/html; charset=utf-8"]],
+  ["/schedule", ["index.html", "text/html; charset=utf-8"]],
+  ["/wallet", ["index.html", "text/html; charset=utf-8"]],
   ["/app.js", ["app.js", "text/javascript; charset=utf-8"]],
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
 ]);

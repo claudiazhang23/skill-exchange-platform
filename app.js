@@ -1,8 +1,12 @@
 const state = {
   data: null,
-  view: "discover",
+  view: window.location.pathname === "/match" ? "matches" : window.location.pathname === "/discover" ? "discover" : window.location.pathname === "/profile" ? "profile" : window.location.pathname === "/messages" ? "messages" : window.location.pathname === "/schedule" ? "schedule" : window.location.pathname === "/wallet" ? "wallet" : "home",
   query: "",
   matchFilter: "all",
+  discoverCategory: "all",
+  discoverLevel: "all",
+  discoverAvailability: "all",
+  matching: false,
   scheduleFilter: "all",
   activePartnerId: null,
   conversation: null,
@@ -50,6 +54,16 @@ const dom = {
   toast: document.querySelector("#toast"),
   chatDrawer: document.querySelector("#chatDrawer"),
   scrim: document.querySelector("#scrim"),
+};
+
+const viewPaths = {
+  home: "/",
+  discover: "/discover",
+  matches: "/match",
+  messages: "/messages",
+  schedule: "/schedule",
+  wallet: "/wallet",
+  profile: "/profile",
 };
 
 function escapeHtml(value = "") {
@@ -307,7 +321,7 @@ function renderFocusAccordion(matches) {
   return `<section class="focus-section"><div class="section-title"><div><span class="section-kicker">先从一个具体目标开始</span><h2>一眼看懂，下一步学什么。</h2></div><button class="text-button" type="button" data-view="matches">浏览全部 <i data-lucide="arrow-right"></i></button></div><div class="focus-accordion">${focusMatches.map((match, index) => { const skill = match.highlightedSkill || match.teaches[0]; return `<article class="focus-accordion-item ${index === 0 ? "is-open" : ""}" data-action="open-request" data-partner-id="${match.id}"><div class="focus-accordion-image"><img src="${partnerImage(match)}" alt="${escapeHtml(skill.name)}" /></div><div class="focus-accordion-copy"><span>${escapeHtml(match.name)} · ${match.score}% 匹配</span><h3>${escapeHtml(skill.name)}</h3><p>${escapeHtml(skill.description || match.bio)}</p><strong>查看交换方案 <i data-lucide="arrow-up-right"></i></strong></div></article>`; }).join("")}</div></section>`;
 }
 
-function renderDiscover() {
+function renderLegacyDiscover() {
   const matches = state.data.matches.slice(0, 4);
   const incoming = state.data.bookings.find((booking) => booking.canAccept);
   const journey = incoming
@@ -317,10 +331,69 @@ function renderDiscover() {
     <section class="page">${renderTasteHero(matches)}${renderSkillMarquee()}<div class="dashboard-layout"><div class="main-column">${renderProfileSnapshot()}${journey}${renderFocusAccordion(matches)}<section class="discovery-section"><div class="section-title"><div><span class="section-kicker">为你推荐</span><h2>今天的高质量匹配 <span>${state.data.matches.length}</span></h2></div><button class="text-button" type="button" data-view="matches">查看全部 <i data-lucide="arrow-right"></i></button></div>${matches.length ? `<div class="match-grid">${matches.map((match) => renderMatchCard(match)).join("")}</div>` : renderEmpty("先补充一个学习目标", "发布想学的技能后，系统会立即生成匹配。", "sparkles")}</section></div><aside class="right-column">${renderAgendaPanel()}${renderWalletSummary()}${renderTrustSummary()}</aside></div></section>`;
 }
 
-function renderMatches() {
+function renderLegacyMatches() {
   const matches = state.data.matches;
   return `
     <section class="page"><header class="page-heading"><div><span class="eyebrow"><i data-lucide="sparkles"></i>动态匹配</span><h1>更适合开始的技能搭档。</h1><p>匹配度会综合你能教、想学、对方的技能卡和共同可约时间。更新档案后会从数据库重新计算。</p></div><div class="page-heading-actions"><button class="outline-button" type="button" data-action="clear-search"${state.query ? "" : " disabled"}><i data-lucide="x"></i>清除搜索</button><button class="primary-button" type="button" data-action="open-skill-modal" data-skill-type="learn"><i data-lucide="plus"></i>添加想学</button></div></header><section class="match-explainer"><div><i data-lucide="graduation-cap"></i><strong>学习目标</strong><span>优先匹配能教你目标技能的人。</span></div><div><i data-lucide="repeat-2"></i><strong>互换互补</strong><span>你会的正好是对方想学的，排名更靠前。</span></div><div><i data-lucide="calendar-clock"></i><strong>共同可约</strong><span>服务端只允许双方空闲的时段进入约课。</span></div></section><div class="section-title"><div><span class="section-kicker">${state.query ? `“${escapeHtml(state.query)}” 的结果` : "全部结果"}</span><h2>共找到 <span>${matches.length}</span> 位搭档</h2></div></div><div class="filter-row"><button class="filter-button ${state.matchFilter === "all" ? "active" : ""}" type="button" data-action="set-match-filter" data-filter="all">全部 <span class="filter-total">${matches.length}</span></button><button class="filter-button ${state.matchFilter === "swap" ? "active" : ""}" type="button" data-action="set-match-filter" data-filter="swap"><i data-lucide="repeat-2"></i>可互换</button><button class="filter-button ${state.matchFilter === "coin" ? "active" : ""}" type="button" data-action="set-match-filter" data-filter="coin"><i data-lucide="coins"></i>技能币</button><button class="filter-button right" type="button" data-action="refresh-data"><i data-lucide="refresh-cw"></i>重新计算</button></div>${matches.length ? `<div class="match-grid" style="margin-top:16px">${matches.map((match) => renderMatchCard(match, true)).join("")}</div>` : renderEmpty("没有找到对应的技能", "换一个关键词，或者发布新的学习目标。")}</section>`;
+}
+
+const homeSkillNodes = [
+  ["Python", "code-2", "blue"],
+  ["UI Design", "pen-tool", "purple"],
+  ["Photography", "camera", "coral"],
+  ["Guitar", "music-2", "yellow"],
+  ["Japanese", "languages", "green"],
+  ["Video Editing", "clapperboard", "blue"],
+];
+
+function renderHomeSkillBubble([name, icon, tone], index) {
+  return `<button class="skill-bubble ${tone} bubble-${index + 1}" type="button" data-action="set-home-skill" data-skill="${escapeHtml(name)}"><i data-lucide="${icon}"></i><span>${escapeHtml(name)}</span><small>探索交换</small></button>`;
+}
+
+function renderHome() {
+  const matches = state.data.matches.slice(0, 3);
+  return `<section class="page home-page">
+    <section class="home-hero">
+      <div class="home-hero-copy"><span class="brand-eyebrow">SKILLS SHOULD TRAVEL.</span><h1>你教我一个技能，<br />我教你一个技能。</h1><p>把会的换成想学的。找到技能互补的人，一起学习，一起完成一次真正的交换。</p><div class="home-hero-actions"><button class="primary-button" type="button" data-view="matches"><i data-lucide="sparkles"></i>Find My Skill Match</button><button class="outline-button" type="button" data-view="discover"><i data-lucide="compass"></i>Explore Skills</button></div><div class="home-relationship"><span><i data-lucide="palette"></i>你能教的</span><i data-lucide="arrow-left-right"></i><span><i data-lucide="graduation-cap"></i>你想学的</span></div></div>
+      <div class="skill-network" aria-label="技能关系网络"><div class="network-lines"><span></span><span></span><span></span><span></span><span></span><span></span></div><div class="network-center"><strong>YOU</strong><small>SKILL SWAP</small><i data-lucide="repeat-2"></i></div>${homeSkillNodes.map(renderHomeSkillBubble).join("")}</div>
+    </section>
+    <section class="home-stats" aria-label="平台数据"><div><strong>12,400+</strong><span>skills shared</span></div><div><strong>4,800+</strong><span>active learners</span></div><div><strong>8,920+</strong><span>skill connections</span></div></section>
+    <section class="how-section"><div class="section-title"><div><span class="section-kicker">How SkillSwap works</span><h2>Three steps. One useful exchange.</h2></div><button class="text-button" type="button" data-view="discover">开始浏览 <i data-lucide="arrow-right"></i></button></div><div class="how-grid"><article><span class="how-number">01</span><i data-lucide="badge-plus"></i><h3>SHOW YOUR SKILLS</h3><p>告诉我们你能教什么，也写下你想学什么。</p><div class="how-visual"><span>UI Design</span><i data-lucide="arrow-left-right"></i><span>Python</span></div></article><article><span class="how-number">02</span><i data-lucide="sparkles"></i><h3>FIND YOUR MATCH</h3><p>匹配技能互补、目标相近、时间合适的人。</p><div class="how-visual network-mini"><i data-lucide="palette"></i><b>✦</b><i data-lucide="code-2"></i></div></article><article><span class="how-number">03</span><i data-lucide="handshake"></i><h3>START SWAPPING</h3><p>从一次聊天开始，约好时间，完成你的交换。</p><div class="how-visual"><span>Teach</span><i data-lucide="arrow-left-right"></i><span>Learn</span></div></article></div></section>
+    <section class="home-people"><div class="section-title"><div><span class="section-kicker">People you may like</span><h2>技能互补的人，正在这里。</h2></div><button class="text-button" type="button" data-view="discover">看更多 <i data-lucide="arrow-right"></i></button></div><div class="home-people-grid">${matches.map((match) => renderMatchCard(match, true)).join("")}</div></section>
+  </section>`;
+}
+
+function discoverMatches() {
+  return state.data.matches.filter((match) => {
+    const categoryOk = state.discoverCategory === "all" || match.teaches.some((skill) => skill.category === state.discoverCategory);
+    const levelOk = state.discoverLevel === "all" || match.teaches.some((skill) => skill.level === state.discoverLevel);
+    const availabilityOk = state.discoverAvailability === "all" || (state.discoverAvailability === "weekend" ? match.commonSlots.some((slot) => /周六|周日/.test(slot)) : match.commonSlots.length > 0);
+    return categoryOk && levelOk && availabilityOk;
+  });
+}
+
+function renderDiscover() {
+  const matches = discoverMatches();
+  const categories = ["all", ...new Set(state.data.matches.flatMap((match) => match.teaches.map((skill) => skill.category)))];
+  return `<section class="page discover-page"><header class="page-heading"><div><span class="eyebrow"><i data-lucide="compass"></i>Discover</span><h1>Find your next skill.</h1><p>Learn something new. Share something useful.</p></div><div class="page-heading-actions"><button class="primary-button" type="button" data-action="open-skill-modal" data-skill-type="teach"><i data-lucide="plus"></i>Add Skill</button></div></header><div class="discover-layout"><aside class="discover-filters panel"><div class="filter-heading"><span>FILTERS</span><button class="text-button" type="button" data-action="clear-discover-filters">重置</button></div><div class="discover-filter-group"><strong>Skill category</strong><div class="discover-filter-list">${categories.map((category) => `<button class="${state.discoverCategory === category ? "active" : ""}" type="button" data-action="set-discover-category" data-category="${escapeHtml(category)}">${category === "all" ? "All" : escapeHtml(category)}</button>`).join("")}</div></div><div class="discover-filter-group"><strong>Experience</strong><div class="discover-filter-list"><button class="${state.discoverLevel === "all" ? "active" : ""}" type="button" data-action="set-discover-level" data-level="all">All levels</button>${["入门", "熟练", "进阶"].map((level) => `<button class="${state.discoverLevel === level ? "active" : ""}" type="button" data-action="set-discover-level" data-level="${level}">${level}</button>`).join("")}</div></div><div class="discover-filter-group"><strong>Availability</strong><div class="discover-filter-list"><button class="${state.discoverAvailability === "all" ? "active" : ""}" type="button" data-action="set-discover-availability" data-availability="all">Any time</button><button class="${state.discoverAvailability === "weekend" ? "active" : ""}" type="button" data-action="set-discover-availability" data-availability="weekend">Weekends</button></div></div></aside><div class="discover-results"><div class="discover-search-row"><label class="discover-search"><i data-lucide="search"></i><input id="discoverSearchMirror" value="${escapeHtml(state.query)}" placeholder="Search skills, people, interests..." /></label><span>${matches.length} people</span></div>${matches.length ? `<div class="match-grid discover-grid">${matches.map((match) => renderMatchCard(match, true)).join("")}</div>` : renderEmpty("No perfect match yet.", "Try adding another skill or expanding your availability.", "sparkles")}</div></div></section>`;
+}
+
+function renderAiNetwork(matches) {
+  const nodes = matches.slice(0, 3).map((match, index) => `<div class="ai-network-node node-${index + 1}"><i data-lucide="${index === 0 ? "code-2" : index === 1 ? "camera" : "music-2"}"></i><span>${escapeHtml(match.highlightedSkill?.name || match.teaches[0]?.name || "Skill")}</span><small>${match.score}%</small></div>`).join("");
+  return `<div class="ai-network-visual"><div class="ai-network-lines"><span></span><span></span><span></span></div><div class="ai-network-you"><strong>YOU</strong><small>SKILL MAP</small></div>${nodes}</div>`;
+}
+
+function renderMatches() {
+  const matches = state.data.matches;
+  const lead = matches[0];
+  const user = state.data.user;
+  const loading = state.matching;
+  const teachSkills = user.canTeach.map((skill) => `<span><i data-lucide="badge-check"></i>${escapeHtml(skill.name)}</span>`).join("");
+  const learnSkills = user.wantToLearn.map((skill) => `<span><i data-lucide="graduation-cap"></i>${escapeHtml(skill.name)}</span>`).join("");
+  const loadingMarkup = `<section class="match-loading panel"><div class="loading-orbit"><i data-lucide="sparkles"></i></div><h2>Finding your skill connections...</h2><p>Scanning skill complementarity, learning goals and availability.</p><div class="loading-bars"><span style="--progress:92%"><b>Skill compatibility</b></span><span style="--progress:84%"><b>Learning goals</b></span><span style="--progress:78%"><b>Availability</b></span></div></section>`;
+  const resultMarkup = `<section class="match-result-layout"><div class="match-result panel"><div class="match-score-large"><strong>${lead?.score || 0}%</strong><span>AI Match Score</span></div><div class="match-people"><div><img src="${user.avatar}" alt="${escapeHtml(user.name)}" /><strong>${escapeHtml(user.name)}</strong></div><i data-lucide="arrow-left-right"></i><div><img src="${lead?.avatar || user.avatar}" alt="${escapeHtml(lead?.name || "技能伙伴")}" /><strong>${escapeHtml(lead?.name || "等待匹配")}</strong></div></div><div class="match-skill-bridge"><span>${escapeHtml(user.canTeach[0]?.name || "Your skill")}</span><i data-lucide="arrow-left-right"></i><span>${escapeHtml(lead?.highlightedSkill?.name || lead?.teaches[0]?.name || "New skill")}</span></div><div class="why-match"><strong>Why this match?</strong>${(lead?.reasons || ["Complementary skills", "Similar learning goals", "Shared availability"]).slice(0, 3).map((reason) => `<span><i data-lucide="check"></i>${escapeHtml(reason)}</span>`).join("")}</div><button class="primary-button" type="button" data-action="open-request" data-partner-id="${lead?.id || ""}"><i data-lucide="message-circle"></i>Start a conversation</button></div>${renderAiNetwork(matches)}</section>`;
+  const moreMarkup = matches.length ? `<section class="match-result-list"><div class="section-title"><div><span class="section-kicker">More connections</span><h2>People you may like</h2></div><button class="text-button" type="button" data-view="discover">Explore all <i data-lucide="arrow-right"></i></button></div><div class="match-grid">${matches.slice(0, 4).map((match) => renderMatchCard(match, true)).join("")}</div></section>` : "";
+  return `<section class="page match-page"><header class="page-heading"><div><span class="eyebrow"><i data-lucide="sparkles"></i>Your Skill Match</span><h1>Find people whose skills fit what you want to learn.</h1><p>AI 是幕后连接器，真正发生的是人与人之间的技能交换。</p></div><div class="page-heading-actions"><button class="primary-button" type="button" data-action="run-ai-match"${loading ? " disabled" : ""}><i data-lucide="sparkles"></i>${loading ? "Finding connections..." : "Find My Matches"}</button></div></header><section class="skill-passport-strip panel"><div><span class="passport-label">I CAN TEACH</span><div class="passport-skills">${teachSkills}</div></div><i class="passport-exchange" data-lucide="arrow-left-right"></i><div><span class="passport-label">I WANT TO LEARN</span><div class="passport-skills learn">${learnSkills}</div></div></section>${loading ? loadingMarkup : resultMarkup}${loading ? "" : moreMarkup}</section>`;
 }
 
 async function openConversation(partnerId) {
@@ -506,13 +579,18 @@ function animatePage() {
   if (window.__huanjiMotion) window.__huanjiMotion.revert();
   const scope = dom.view;
   window.__huanjiMotion = gsap.context(() => {
-    gsap.fromTo(scope.querySelectorAll(".taste-hero-copy > *"), { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.72, stagger: 0.08, ease: "power3.out" });
-    gsap.fromTo(scope.querySelector(".taste-hero-visual"), { opacity: 0, x: 28, scale: 0.96 }, { opacity: 1, x: 0, scale: 1, duration: 0.9, delay: 0.1, ease: "power3.out" });
+    const introElements = scope.querySelectorAll(".taste-hero-copy > *, .home-hero-copy > *");
+    if (introElements.length) gsap.fromTo(introElements, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.72, stagger: 0.08, ease: "power3.out" });
+    const heroVisual = scope.querySelector(".taste-hero-visual, .skill-network");
+    if (heroVisual) gsap.fromTo(heroVisual, { opacity: 0, x: 28, scale: 0.96 }, { opacity: 1, x: 0, scale: 1, duration: 0.9, delay: 0.1, ease: "power3.out" });
     gsap.utils.toArray(scope.querySelectorAll(".partner-card, .focus-accordion-item, .panel")).forEach((element, index) => {
       gsap.fromTo(element, { opacity: 0.35, y: 28, scale: 0.97 }, { opacity: 1, y: 0, scale: 1, duration: 0.7, delay: Math.min(index * 0.04, 0.24), ease: "power2.out", scrollTrigger: { trigger: element, start: "top 91%", end: "top 62%", scrub: 0.8 } });
     });
     gsap.utils.toArray(scope.querySelectorAll(".partner-cover img, .focus-accordion-image img")).forEach((image) => {
       gsap.fromTo(image, { scale: 1.14 }, { scale: 1, ease: "none", scrollTrigger: { trigger: image, start: "top 95%", end: "bottom 45%", scrub: 1 } });
+    });
+    gsap.utils.toArray(scope.querySelectorAll(".skill-bubble, .how-grid article")).forEach((element, index) => {
+      gsap.fromTo(element, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.6, delay: Math.min(index * 0.05, 0.3), ease: "power2.out", scrollTrigger: { trigger: element, start: "top 94%", end: "top 72%", scrub: 0.5 } });
     });
     const marquee = scope.querySelector(".skill-marquee-track");
     if (marquee) gsap.to(marquee, { xPercent: -50, duration: 24, ease: "none", repeat: -1 });
@@ -522,7 +600,7 @@ function animatePage() {
 function render() {
   if (!state.data) return;
   renderChrome();
-  const renderer = { discover: renderDiscover, matches: renderMatches, messages: renderMessages, schedule: renderSchedule, wallet: renderWallet, profile: renderProfile }[state.view] || renderDiscover;
+  const renderer = { home: renderHome, discover: renderDiscover, matches: renderMatches, messages: renderMessages, schedule: renderSchedule, wallet: renderWallet, profile: renderProfile }[state.view] || renderHome;
   dom.view.innerHTML = renderer();
   renderNotificationMenu();
   renderModal();
@@ -530,9 +608,10 @@ function render() {
   animatePage();
 }
 
-function setView(view) {
+function setView(view, { syncUrl = true } = {}) {
   state.view = view;
   state.notificationOpen = false;
+  if (syncUrl && viewPaths[view] && window.location.pathname !== viewPaths[view]) window.history.pushState({ view }, "", viewPaths[view]);
   render();
   window.requestAnimationFrame(() => dom.view.focus());
   if (view === "messages") {
@@ -691,6 +770,45 @@ document.addEventListener("click", async (event) => {
       } else await refresh();
       return;
     }
+    if (action === "set-home-skill") {
+      state.query = trigger.dataset.skill;
+      dom.search.value = state.query;
+      state.view = "discover";
+      await refresh();
+      return;
+    }
+    if (action === "set-discover-category") {
+      state.discoverCategory = trigger.dataset.category;
+      render();
+      return;
+    }
+    if (action === "set-discover-level") {
+      state.discoverLevel = trigger.dataset.level;
+      render();
+      return;
+    }
+    if (action === "set-discover-availability") {
+      state.discoverAvailability = trigger.dataset.availability;
+      render();
+      return;
+    }
+    if (action === "clear-discover-filters") {
+      state.discoverCategory = "all";
+      state.discoverLevel = "all";
+      state.discoverAvailability = "all";
+      render();
+      return;
+    }
+    if (action === "run-ai-match") {
+      state.matching = true;
+      render();
+      window.setTimeout(async () => {
+        state.matching = false;
+        await refresh();
+        showToast("已找到适合你的技能连接");
+      }, 1100);
+      return;
+    }
     if (action === "open-skill-modal") return openModal("skill", { skillType: trigger.dataset.skillType || "teach", skillId: trigger.dataset.skillId });
     if (action === "open-profile-modal") return openModal("profile");
     if (action === "open-request") {
@@ -800,6 +918,20 @@ dom.search.addEventListener("input", () => {
       refresh().catch((error) => showToast(error.message));
     }
   }, 260);
+});
+
+document.addEventListener("input", (event) => {
+  if (event.target.id !== "discoverSearchMirror") return;
+  state.query = event.target.value.trim();
+  dom.search.value = state.query;
+  window.clearTimeout(searchTimer);
+  searchTimer = window.setTimeout(() => refresh().catch((error) => showToast(error.message)), 260);
+});
+
+window.addEventListener("popstate", () => {
+  const path = window.location.pathname;
+  const nextView = path === "/match" ? "matches" : path === "/discover" ? "discover" : path === "/profile" ? "profile" : path === "/messages" ? "messages" : path === "/schedule" ? "schedule" : path === "/wallet" ? "wallet" : "home";
+  setView(nextView, { syncUrl: false });
 });
 
 document.addEventListener("keydown", (event) => {
