@@ -485,6 +485,10 @@ body.signed-out #viewContent { max-width: none; min-height: 100vh; padding: 0; }
 .auth-card > h1 { margin-top: 13px; text-align: center; font-family: "Manrope", "Noto Sans SC", sans-serif; font-size: 20px; }
 .auth-card > p { margin-top: 7px; color: var(--muted); font-size: 12px; line-height: 1.6; text-align: center; }
 .auth-card > .primary-button { width: calc(100% - 56px); margin-top: 20px; margin-bottom: 28px; }
+.server-guide { display: grid; gap: 8px; margin: 19px 28px 0; padding: 13px; background: #f2f8f4; border: 1px solid #d6e8df; border-radius: 7px; text-align: left; }
+.server-guide code { color: var(--teal-dark); font-family: "DM Mono", monospace; font-size: 11px; }
+.server-guide a { color: var(--teal-dark); font-size: 11px; font-weight: 700; text-decoration: none; }
+.server-guide a:hover { text-decoration: underline; }
 .auth-tabs { display: grid; grid-template-columns: 1fr 1fr; padding: 6px; background: #f2f6f3; border-bottom: 1px solid var(--line); }
 .auth-tabs button { min-height: 38px; color: var(--muted); background: transparent; border-radius: 5px; font-size: 13px; font-weight: 700; }
 .auth-tabs button.active { color: var(--teal-dark); background: #fff; box-shadow: 0 1px 3px rgba(24,49,43,.08); }

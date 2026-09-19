@@ -152,7 +152,10 @@ async function refresh({ preserveConversation = true } = {}) {
 
 function renderFatal(message) {
   document.body.classList.add("signed-out");
-  dom.view.innerHTML = `<section class="auth-page"><div class="auth-card"><span class="auth-mark"><i data-lucide="circle-alert"></i></span><h1>暂时无法加载平台</h1><p>${escapeHtml(message)}</p><button class="primary-button" type="button" data-action="retry-load"><i data-lucide="refresh-cw"></i>重新连接</button></div></section>`;
+  const openedAsFile = window.location.protocol === "file:";
+  const title = openedAsFile ? "请通过本地服务打开平台" : "暂时无法加载平台";
+  const detail = openedAsFile ? "你当前是直接打开 index.html 文件。完整平台需要 Node 服务端提供登录、匹配、聊天和约课接口。请在项目目录运行 npm start，再打开下面的本地地址。" : message;
+  dom.view.innerHTML = `<section class="auth-page"><div class="auth-card"><span class="auth-mark"><i data-lucide="circle-alert"></i></span><h1>${title}</h1><p>${escapeHtml(detail)}</p>${openedAsFile ? '<div class="server-guide"><code>npm start</code><a href="http://127.0.0.1:3000">打开 http://127.0.0.1:3000</a></div>' : ""}<button class="primary-button" type="button" data-action="retry-load"><i data-lucide="refresh-cw"></i>重新连接</button></div></section>`;
   iconize();
 }
 
