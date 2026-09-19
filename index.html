@@ -3,27 +3,43 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="换技 - 用技能币或直接互换开始一段新的学习关系。" />
-    <title>换技 | 发现适合你的技能交换</title>
+    <meta
+      name="description"
+      content="换技 - 使用技能币或直接互换，和合适的人开始线上学习。"
+    />
+    <title>换技 | 技能交换工作台</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <div class="app-shell">
       <aside class="sidebar" aria-label="主导航">
-        <a class="brand" href="#top" aria-label="换技主页">
+        <a class="brand" href="#" data-view="discover" aria-label="换技主页">
           <span class="brand-mark" aria-hidden="true"><i data-lucide="repeat-2"></i></span>
           <span>换技</span>
         </a>
 
-        <nav class="main-nav">
-          <button class="nav-item active" data-view="发现" type="button"><i data-lucide="compass"></i><span>发现</span></button>
-          <button class="nav-item" data-view="智能匹配" type="button"><i data-lucide="sparkles"></i><span>智能匹配</span><b>6</b></button>
-          <button class="nav-item" data-view="消息" type="button" id="openChatNav"><i data-lucide="message-circle"></i><span>消息</span><b class="coral">2</b></button>
-          <button class="nav-item" data-view="我的约课" type="button"><i data-lucide="calendar-days"></i><span>我的约课</span></button>
-          <button class="nav-item" data-view="技能钱包" type="button"><i data-lucide="wallet-cards"></i><span>技能钱包</span></button>
+        <nav class="main-nav" aria-label="主要功能">
+          <button class="nav-item active" type="button" data-view="discover">
+            <i data-lucide="compass"></i><span>发现</span>
+          </button>
+          <button class="nav-item" type="button" data-view="matches">
+            <i data-lucide="sparkles"></i><span>智能匹配</span><b id="matchNavBadge">6</b>
+          </button>
+          <button class="nav-item" type="button" data-view="messages">
+            <i data-lucide="message-circle"></i><span>消息</span><b class="coral" id="messageNavBadge">2</b>
+          </button>
+          <button class="nav-item" type="button" data-view="schedule">
+            <i data-lucide="calendar-days"></i><span>我的约课</span><b class="amber" id="scheduleNavBadge" hidden>1</b>
+          </button>
+          <button class="nav-item" type="button" data-view="wallet">
+            <i data-lucide="wallet-cards"></i><span>技能钱包</span>
+          </button>
         </nav>
 
         <div class="sidebar-spacer"></div>
@@ -34,178 +50,81 @@
             <span>技能币余额</span>
             <strong id="sideCoinBalance">128</strong>
           </div>
-          <button class="icon-button" type="button" aria-label="查看技能币明细" title="查看技能币明细" id="walletButton"><i data-lucide="arrow-up-right"></i></button>
+          <button
+            class="icon-button"
+            type="button"
+            data-view="wallet"
+            aria-label="打开技能钱包"
+            title="打开技能钱包"
+          >
+            <i data-lucide="arrow-up-right"></i>
+          </button>
         </section>
 
-        <button class="profile-switcher" type="button" id="profileButton">
-          <img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=120&q=85" alt="林安" />
-          <span><strong>林安</strong><small>查看个人主页</small></span>
+        <button class="profile-switcher" type="button" data-view="profile">
+          <img
+            id="sideProfileAvatar"
+            src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=120&q=85"
+            alt="林安"
+          />
+          <span><strong id="sideProfileName">林安</strong><small>查看个人主页</small></span>
           <i data-lucide="more-horizontal"></i>
         </button>
       </aside>
 
-      <section class="workspace" id="top">
+      <section class="workspace">
         <header class="topbar">
-          <a class="mobile-brand" href="#top" aria-label="换技主页"><span class="brand-mark"><i data-lucide="repeat-2"></i></span>换技</a>
-          <label class="global-search">
+          <a class="mobile-brand" href="#" data-view="discover" aria-label="换技主页">
+            <span class="brand-mark"><i data-lucide="repeat-2"></i></span>换技
+          </a>
+
+          <label class="global-search" for="skillSearch">
             <i data-lucide="search"></i>
-            <input id="skillSearch" type="search" placeholder="搜索想学的技能、课程或伙伴" autocomplete="off" />
+            <input
+              id="skillSearch"
+              type="search"
+              placeholder="搜索技能、课程或伙伴"
+              autocomplete="off"
+            />
             <kbd>/</kbd>
           </label>
+
           <div class="top-actions">
-            <button class="icon-button notification-button" type="button" aria-label="查看通知" title="查看通知" id="notificationButton"><i data-lucide="bell"></i><span></span></button>
-            <button class="primary-button" type="button" id="openPublish"><i data-lucide="plus"></i><span>发布技能</span></button>
+            <div class="notification-wrap">
+              <button
+                class="icon-button notification-button"
+                type="button"
+                data-action="toggle-notifications"
+                aria-label="查看通知"
+                title="查看通知"
+              >
+                <i data-lucide="bell"></i><span id="notificationDot"></span>
+              </button>
+              <div class="notification-menu" id="notificationMenu" hidden></div>
+            </div>
+            <button class="primary-button" type="button" data-action="open-skill-form" data-skill-type="teach">
+              <i data-lucide="plus"></i><span>发布技能</span>
+            </button>
           </div>
         </header>
 
-        <main>
-          <section class="welcome-row" aria-labelledby="pageTitle">
-            <div>
-              <span class="eyebrow"><i data-lucide="sun-medium"></i> 周四，适合学点新东西</span>
-              <h1 id="pageTitle">把会的，换成想学的。</h1>
-              <p>系统根据你的技能、学习目标与可约时间，找到更容易开始的搭档。</p>
-            </div>
-            <div class="goal-status">
-              <div class="goal-ring" aria-label="本周学习目标完成 72%"><span>72<small>%</small></span></div>
-              <div><strong>本周学习目标</strong><span>已完成 3 / 4 次约课</span></div>
-            </div>
-          </section>
-
-          <section class="dashboard-layout">
-            <div class="main-column">
-              <section class="your-skills" aria-label="我的技能档案">
-                <div class="skill-side teaches">
-                  <div class="skill-side-label"><i data-lucide="badge-check"></i> 我能教</div>
-                  <div class="skill-chips">
-                    <button class="skill-chip navy" type="button">演示表达 <i data-lucide="x"></i></button>
-                    <button class="skill-chip navy" type="button">Notion 整理 <i data-lucide="x"></i></button>
-                    <button class="skill-chip add-chip" type="button" id="addTeachSkill" aria-label="新增能教的技能" title="新增能教的技能"><i data-lucide="plus"></i></button>
-                  </div>
-                </div>
-                <div class="skill-divider"></div>
-                <div class="skill-side learns">
-                  <div class="skill-side-label"><i data-lucide="graduation-cap"></i> 我想学</div>
-                  <div class="skill-chips">
-                    <button class="skill-chip amber" type="button">人像摄影 <i data-lucide="x"></i></button>
-                    <button class="skill-chip amber" type="button">Python 自动化 <i data-lucide="x"></i></button>
-                    <button class="skill-chip add-chip" type="button" id="addLearnSkill" aria-label="新增想学的技能" title="新增想学的技能"><i data-lucide="plus"></i></button>
-                  </div>
-                </div>
-              </section>
-
-              <section class="matches-section" aria-labelledby="matchesTitle">
-                <div class="section-heading">
-                  <div>
-                    <span class="section-kicker">为你推荐</span>
-                    <h2 id="matchesTitle">今天的高质量匹配 <span id="matchCount">6</span></h2>
-                  </div>
-                  <button class="text-button" type="button" id="refreshMatches"><i data-lucide="refresh-cw"></i> 换一批</button>
-                </div>
-
-                <div class="filter-row" role="toolbar" aria-label="匹配方式筛选">
-                  <button class="filter-button active" type="button" data-filter="all">全部 <span>6</span></button>
-                  <button class="filter-button" type="button" data-filter="swap"><i data-lucide="repeat-2"></i> 可互换</button>
-                  <button class="filter-button" type="button" data-filter="coin"><i data-lucide="coins"></i> 技能币</button>
-                  <button class="filter-button filter-control" type="button" id="sortButton"><i data-lucide="sliders-horizontal"></i> 匹配度</button>
-                </div>
-
-                <div class="match-grid" id="matchGrid" aria-live="polite"></div>
-                <div class="empty-state" id="emptyState" hidden>
-                  <i data-lucide="search-x"></i>
-                  <strong>没有找到对应的技能</strong>
-                  <span>试试更短的关键词，或切换匹配方式。</span>
-                </div>
-              </section>
-
-            </div>
-
-            <aside class="right-column">
-              <section class="calendar-panel" aria-labelledby="agendaTitle">
-                <div class="side-heading">
-                  <div><span class="section-kicker">我的约课</span><h2 id="agendaTitle">接下来</h2></div>
-                  <button class="icon-button" type="button" aria-label="查看完整日程" title="查看完整日程" id="calendarButton"><i data-lucide="calendar-days"></i></button>
-                </div>
-                <div class="date-strip" aria-label="本周日期">
-                  <button type="button"><small>周三</small><strong>18</strong></button>
-                  <button type="button" class="selected"><small>今天</small><strong>19</strong></button>
-                  <button type="button"><small>周五</small><strong>20</strong></button>
-                  <button type="button"><small>周六</small><strong>21</strong></button>
-                  <button type="button"><small>周日</small><strong>22</strong></button>
-                </div>
-                <div class="agenda-list">
-                  <article class="agenda-item blue">
-                    <time>19:30</time>
-                    <div><span>Python 自动化入门</span><small>与 周野 · 在线</small></div>
-                    <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=80&q=80" alt="周野" />
-                  </article>
-                  <article class="agenda-item coral">
-                    <time>20:45</time>
-                    <div><span>教：一页讲清工作</span><small>与 陈默 · 在线</small></div>
-                    <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=80&q=80" alt="陈默" />
-                  </article>
-                </div>
-                <button class="full-width-text" type="button" id="viewSchedule">查看本周日程 <i data-lucide="arrow-right"></i></button>
-              </section>
-
-              <section class="wallet-panel" aria-label="技能钱包摘要">
-                <div class="wallet-header"><span><i data-lucide="wallet-cards"></i> 技能钱包</span><button class="icon-button" type="button" aria-label="打开钱包" title="打开钱包" id="openWallet"><i data-lucide="arrow-up-right"></i></button></div>
-                <div class="wallet-amount"><strong id="walletCoinBalance">128</strong><span>技能币</span></div>
-                <div class="wallet-stats"><span><small>本月获得</small><b>+46</b></span><span><small>待入账</small><b>18</b></span></div>
-              </section>
-
-              <section class="trust-panel" aria-label="互换信用">
-                <div class="trust-score"><span>信用分</span><strong>4.9</strong><i data-lucide="star"></i></div>
-                <p>完成 18 次守约交换<br />你的回复速度超过 91% 的用户</p>
-                <button type="button" id="trustButton">查看信用档案 <i data-lucide="arrow-up-right"></i></button>
-              </section>
-            </aside>
-          </section>
-        </main>
+        <main id="viewContent" tabindex="-1"></main>
       </section>
     </div>
 
-    <dialog class="exchange-dialog" id="exchangeDialog" aria-labelledby="exchangeTitle">
-      <button class="dialog-close icon-button" type="button" aria-label="关闭" title="关闭" data-close-dialog><i data-lucide="x"></i></button>
-      <div class="dialog-layout">
-        <div class="dialog-profile">
-          <img id="dialogImage" src="" alt="" />
-          <div class="dialog-person"><img id="dialogAvatar" src="" alt="" /><span><strong id="dialogName"></strong><small id="dialogMeta"></small></span></div>
-          <span class="match-figure"><i data-lucide="sparkles"></i> <b id="dialogMatch">96%</b> 契合</span>
-        </div>
-        <div class="dialog-content">
-          <span class="section-kicker" id="dialogCategory">摄影</span>
-          <h2 id="exchangeTitle">跟何雨一起学人像摄影</h2>
-          <p id="dialogDescription"></p>
-          <div class="dialog-offer"><span>她想学</span><strong id="dialogWant"></strong></div>
-          <fieldset class="method-set">
-            <legend>这次怎么交换？</legend>
-            <div class="method-options" id="methodOptions"></div>
-          </fieldset>
-          <div class="booking-row">
-            <div><span>选择时段</span><div class="slot-options" id="slotOptions"><button class="slot active" type="button">周五 20:00</button><button class="slot" type="button">周六 10:30</button><button class="slot" type="button">周日 15:00</button></div></div>
-          </div>
-          <div class="dialog-footer"><button class="text-button" type="button" id="messageFirst"><i data-lucide="message-circle"></i> 先聊聊</button><button class="primary-button" type="button" id="confirmExchange">发送约课请求 <i data-lucide="arrow-right"></i></button></div>
-        </div>
-      </div>
+    <nav class="mobile-nav" aria-label="移动端导航">
+      <button type="button" data-view="discover"><i data-lucide="compass"></i><span>发现</span></button>
+      <button type="button" data-view="matches"><i data-lucide="sparkles"></i><span>匹配</span></button>
+      <button type="button" data-action="open-skill-form" data-skill-type="teach"><i data-lucide="plus-circle"></i><span>发布</span></button>
+      <button type="button" data-view="schedule"><i data-lucide="calendar-days"></i><span>约课</span></button>
+      <button type="button" data-view="profile"><i data-lucide="user-round"></i><span>我的</span></button>
+    </nav>
+
+    <dialog class="app-modal" id="appModal" aria-labelledby="modalTitle">
+      <div id="modalContent"></div>
     </dialog>
 
-    <dialog class="publish-dialog" id="publishDialog" aria-labelledby="publishTitle">
-      <button class="dialog-close icon-button" type="button" aria-label="关闭" title="关闭" data-close-dialog><i data-lucide="x"></i></button>
-      <div class="publish-header"><span class="section-kicker">新建技能</span><h2 id="publishTitle">分享你会的，收获新连接。</h2><p>填写一个技能卡片，就能出现在合适的学习者面前。</p></div>
-      <form id="publishForm">
-        <label>我能教什么？<input id="publishSkill" required maxlength="24" placeholder="例如：iPhone 人像摄影" /></label>
-        <div class="form-grid"><label>授课方式<select><option>线上实时</option><option>录播 + 答疑</option><option>线上 / 线下都可</option></select></label><label>每次时长<select><option>60 分钟</option><option>45 分钟</option><option>90 分钟</option></select></label></div>
-        <fieldset class="publish-method"><legend>接受方式</legend><label><input type="checkbox" checked /> 技能币</label><label><input type="checkbox" checked /> 直接互换</label></fieldset>
-        <button class="primary-button full-button" type="submit">发布技能卡片 <i data-lucide="arrow-right"></i></button>
-      </form>
-    </dialog>
-
-    <aside class="chat-drawer" id="chatDrawer" aria-label="聊天窗口" aria-hidden="true">
-      <div class="chat-head"><div><button class="chat-user" type="button"><img id="chatAvatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=100&q=80" alt="何雨" /><span><strong id="chatName">何雨</strong><small><i></i> 通常 5 分钟内回复</small></span></button></div><button class="icon-button" type="button" aria-label="关闭聊天" title="关闭聊天" id="closeChat"><i data-lucide="x"></i></button></div>
-      <div class="chat-context"><i data-lucide="sparkles"></i><span>你们因「人像摄影」与「演示表达」匹配</span></div>
-      <div class="messages" id="messages"><div class="message received">嗨，看到你也在找人像摄影的入门课！</div><div class="message received">我很想跟你学做演示，能先聊聊彼此的目标吗？</div><div class="message-meta">今天 16:24</div></div>
-      <form class="chat-compose" id="chatForm"><button class="icon-button" type="button" aria-label="添加内容" title="添加内容" id="attachButton"><i data-lucide="plus"></i></button><input id="chatInput" placeholder="写点什么..." autocomplete="off" /><button class="send-button" type="submit" aria-label="发送消息" title="发送消息"><i data-lucide="send"></i></button></form>
-    </aside>
+    <aside class="chat-drawer" id="chatDrawer" aria-label="聊天窗口" aria-hidden="true"></aside>
     <div class="scrim" id="scrim" hidden></div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
