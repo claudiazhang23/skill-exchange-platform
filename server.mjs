@@ -24,6 +24,8 @@ const staticFiles = new Map([
   ["/styles.css", ["styles.css", "text/css; charset=utf-8"]],
 ]);
 
+const assetRoot = join(rootDirectory, "public", "assets");
+
 class HttpError extends Error {
   constructor(status, message) {
     super(message);
@@ -1307,6 +1309,20 @@ async function handleApi(db, request, response, url) {
 
 function sendStatic(request, response, url) {
   const target = staticFiles.get(url.pathname);
+  if (!target && url.pathname.startsWith("/assets/")) {
+    const requested = resolve(assetRoot, url.pathname.slice("/assets/".length));
+    if (!requested.startsWith(resolve(assetRoot))) throw new HttpError(404, "资源不存在");
+    try {
+      const contents = readFileSync(requested);
+      const ext = extname(requested).toLowerCase();
+      const type = ext === ".png" ? "image/png" : ext === ".jpg" || ext === ".jpeg" ? "image/jpeg" : "application/octet-stream";
+      response.writeHead(200, { "content-type": type, "cache-control": "public, max-age=86400" });
+      response.end(contents);
+      return;
+    } catch {
+      throw new HttpError(404, "资源不存在");
+    }
+  }
   if (!target) throw new HttpError(404, "页面不存在");
   const [fileName, contentType] = target;
   const contents = readFileSync(resolve(rootDirectory, fileName));
