@@ -18,6 +18,15 @@ function initMotion() {
     ease: 'power3.out',
     delay: .1,
   });
+  gsap.fromTo('.home-match-card', { autoAlpha: 0, y: 20, scale: .98 }, {
+    autoAlpha: 1,
+    y: 0,
+    scale: 1,
+    duration: .65,
+    stagger: .07,
+    ease: 'power3.out',
+    delay: .1,
+  });
   gsap.fromTo('.reference-collab', { autoAlpha: 0, y: 46 }, {
     autoAlpha: 1,
     y: 0,
@@ -160,11 +169,16 @@ document.getElementById('sortMatch').addEventListener('click', (event) => {
   updateSkillCards();
 });
 
-document.querySelectorAll('.skill-save').forEach((button) => button.addEventListener('click', (event) => {
+document.querySelectorAll('.skill-save, .profile-save').forEach((button) => button.addEventListener('click', (event) => {
   event.stopPropagation();
   const saved = button.classList.toggle('is-saved');
   button.textContent = saved ? '♥' : '♡';
   showToast(saved ? '已收藏这份技能档案' : '已取消收藏');
+}));
+document.querySelectorAll('.home-match-save').forEach((button) => button.addEventListener('click', () => {
+  const saved = button.classList.toggle('is-saved');
+  button.textContent = saved ? '♥' : '♡';
+  showToast(saved ? '已收藏这组技能匹配' : '已取消收藏');
 }));
 
 const profiles = {

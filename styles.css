@@ -1233,3 +1233,291 @@ main { overflow-x: hidden; width: 100%; max-width: 100%; }
 }
 .primary-nav .nav-link { min-height: auto; padding: 5px 0 8px; }
 .new-button { border-radius: 4px; background: var(--ink-black); color: var(--warm-paper); }
+
+/* Discovery profile cards: people first, skills clearly grouped. */
+#page-discover .skill-feed-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 22px;
+  max-width: 1280px;
+}
+#page-discover .skill-profile-card {
+  overflow: visible;
+  border: 1px solid rgba(41,37,31,.12);
+  border-radius: 18px;
+  background: #FFFDF8;
+  box-shadow: 0 10px 24px rgba(41,37,31,.08);
+}
+#page-discover .profile-cover {
+  position: relative;
+  overflow: hidden;
+  height: 230px;
+  border-radius: 17px 17px 0 0;
+  background: #E9E1D2;
+}
+#page-discover .profile-cover > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(.9) contrast(.98) sepia(.04);
+}
+#page-discover .profile-exchange-tag {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  padding: 8px 11px;
+  border-radius: 16px;
+  background: rgba(83,145,133,.94);
+  color: #FFFDF8;
+  font-family: var(--cn);
+  font-size: 11px;
+  font-weight: 700;
+}
+#page-discover .profile-save {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255,253,248,.84);
+  color: var(--ink-black);
+  font-family: Arial, sans-serif;
+  font-size: 25px;
+  line-height: 1;
+}
+#page-discover .profile-save:hover,
+#page-discover .profile-save.is-saved { color: var(--coral); }
+#page-discover .profile-card-body { padding: 0 24px 20px; }
+#page-discover .profile-person {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  min-height: 71px;
+  margin-top: -30px;
+  position: relative;
+  z-index: 1;
+}
+#page-discover .profile-person > img {
+  width: 72px;
+  height: 72px;
+  border: 4px solid #FFFDF8;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 3px 10px rgba(41,37,31,.12);
+}
+#page-discover .profile-person h3 {
+  margin: 20px 0 3px;
+  color: var(--ink-black);
+  font-family: var(--cn);
+  font-size: 23px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+#page-discover .profile-person p,
+#page-discover .profile-card-bottom > span {
+  margin: 0;
+  color: #799E95;
+  font-family: var(--cn);
+  font-size: 12px;
+  line-height: 1.35;
+}
+#page-discover .profile-skill-group {
+  display: grid;
+  gap: 8px;
+  margin-top: 16px;
+  border-top: 1px solid rgba(41,37,31,.12);
+  padding-top: 15px;
+}
+#page-discover .profile-skill-group h4 {
+  margin: 0;
+  color: var(--ink-black);
+  font-family: var(--cn);
+  font-size: 16px;
+  font-weight: 700;
+}
+#page-discover .profile-skill-group h4::before { margin-right: 7px; color: #5D9A84; content: '⌁'; }
+#page-discover .profile-wants h4::before { color: #E3794B; content: '⌁'; }
+#page-discover .profile-skill-row {
+  display: grid;
+  grid-template-columns: 39px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 8px;
+  min-height: 43px;
+}
+#page-discover .profile-skill-row img {
+  width: 39px;
+  height: 43px;
+  object-fit: contain;
+}
+#page-discover .profile-skill-row span {
+  overflow: hidden;
+  color: var(--ink-black);
+  font-family: var(--cn);
+  font-size: 15px;
+  font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+#page-discover .profile-skill-row b {
+  border-radius: 13px;
+  padding: 5px 8px;
+  color: #5D9A84;
+  background: #ECF4E9;
+  font-family: var(--cn);
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#page-discover .profile-wants .profile-skill-row b { color: #71808A; background: #EDF0F1; }
+#page-discover .profile-card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 18px;
+  border-top: 1px solid rgba(41,37,31,.12);
+  padding-top: 15px;
+}
+#page-discover .profile-card-bottom .view-profile {
+  width: auto;
+  margin: 0;
+  border: 0;
+  border-radius: 22px;
+  padding: 11px 20px;
+  background: var(--coral);
+  color: #FFFDF8;
+  font-family: var(--cn);
+  font-size: 13px;
+  font-weight: 700;
+}
+#page-discover .profile-card-bottom .view-profile i { margin-left: 7px; font-size: 17px; font-style: normal; }
+
+@media (max-width: 1100px) {
+  #page-discover .skill-feed-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  #page-discover .skill-feed-grid { grid-template-columns: 1fr; }
+  #page-discover .profile-cover { height: 220px; }
+}
+
+/* Profile-card refinement: crop tomato assets to the fruit, keep the type outside. */
+#page-discover .profile-cover { height: 208px; }
+#page-discover .profile-card-body { padding: 0 22px 19px; }
+#page-discover .profile-person {
+  min-height: 76px;
+  margin-top: -32px;
+  gap: 12px;
+}
+#page-discover .profile-person > img {
+  width: 68px;
+  height: 68px;
+  border-width: 4px;
+}
+#page-discover .profile-person h3 {
+  margin: 21px 0 3px;
+  font-size: 22px;
+  letter-spacing: 0;
+}
+#page-discover .profile-person p { font-size: 11px; }
+#page-discover .profile-skill-group { margin-top: 13px; padding-top: 13px; }
+#page-discover .profile-skill-group h4 { font-size: 15px; }
+#page-discover .profile-skill-group h4::before { content: none; }
+#page-discover .profile-skill-row {
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  min-height: 47px;
+  gap: 9px;
+}
+#page-discover .profile-skill-row img {
+  width: 42px;
+  height: 42px;
+  object-fit: cover;
+  object-position: center top;
+}
+#page-discover .profile-skill-row span { font-size: 14px; }
+#page-discover .profile-skill-row b {
+  min-width: 0;
+  border-radius: 12px;
+  padding: 4px 7px;
+  font-size: 10px;
+}
+#page-discover .profile-card-bottom { margin-top: 15px; padding-top: 13px; }
+#page-discover .profile-card-bottom .view-profile { min-height: 38px; padding: 9px 17px; }
+
+@media (max-width: 680px) {
+  #page-discover .profile-cover { height: 205px; }
+  #page-discover .profile-card-body { padding-inline: 18px; }
+}
+
+/* Homepage mutual-match cards. */
+.reference-testimonials {
+  aspect-ratio: auto;
+  min-height: 470px;
+  padding: 26px 28px 66px;
+  background: #F7F1E5;
+  background-image: linear-gradient(90deg, rgba(41,37,31,.035) 1px, transparent 1px), linear-gradient(0deg, rgba(41,37,31,.025) 1px, transparent 1px);
+  background-size: 52px 52px;
+}
+.reference-testimonials .reference-card-head { color: var(--ink-black); font-family: var(--cn); font-size: 13px; }
+.home-match-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 22px;
+}
+.home-match-card {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  border: 1px solid rgba(41,37,31,.12);
+  border-radius: 18px;
+  padding: 14px;
+  background: rgba(255,253,247,.9);
+  box-shadow: 0 7px 16px rgba(41,37,31,.07);
+}
+.home-match-card--lilac { background: #F0ECFF; }
+.home-match-top { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.home-match-top span, .home-match-top small {
+  padding: 5px 7px;
+  border-radius: 10px;
+  font-family: var(--cn);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+}
+.home-match-top span { color: #4D56A7; background: #E9E9FF; }
+.home-match-top small { color: var(--coral); background: #FDE8E4; }
+.home-skill-pair { display: grid; grid-template-columns: 1fr 22px 1fr; align-items: center; gap: 5px; margin: 16px 0; }
+.home-skill-pair > div { min-width: 0; border-radius: 16px; padding: 10px 5px 9px; background: rgba(247,241,229,.85); text-align: center; }
+.home-match-card--lilac .home-skill-pair > div { background: rgba(255,255,255,.73); }
+.home-skill-pair img { width: 56px; height: 60px; margin: 0 auto 4px; object-fit: contain; }
+.home-skill-pair strong { display: block; min-height: 27px; font-family: var(--cn); font-size: 13px; font-weight: 700; line-height: 1.15; }
+.home-skill-pair span { display: block; margin-top: 4px; color: var(--coral); font-family: var(--cn); font-size: 10px; }
+.home-skill-pair > b { color: #8C74F5; font-family: var(--display); font-size: 24px; font-weight: 400; text-align: center; }
+.home-person-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; border-top: 1px solid rgba(41,37,31,.12); padding-top: 12px; }
+.home-person-pair > div { display: flex; min-width: 0; align-items: center; gap: 7px; }
+.home-person-pair > div + div { border-left: 1px solid rgba(41,37,31,.12); padding-left: 9px; }
+.home-person-pair img { width: 31px; height: 31px; flex: 0 0 31px; border-radius: 50%; object-fit: cover; }
+.home-person-pair span { display: grid; min-width: 0; gap: 2px; }
+.home-person-pair strong { overflow: hidden; font-family: var(--cn); font-size: 11px; font-weight: 700; text-overflow: ellipsis; white-space: nowrap; }
+.home-person-pair small { overflow: hidden; color: #7882B0; font-family: var(--cn); font-size: 9px; text-overflow: ellipsis; white-space: nowrap; }
+.home-match-actions { display: grid; grid-template-columns: minmax(0, 1fr) 34px; align-items: center; gap: 10px; margin-top: auto; padding-top: 15px; }
+.home-match-action { min-height: 38px; border-radius: 19px; background: var(--coral); color: #FFF8ED; font-family: var(--cn); font-size: 12px; font-weight: 700; }
+.home-match-card--lilac .home-match-action { border: 1px solid #8C74F5; background: transparent; color: #785FEC; }
+.home-match-action span { margin-left: 7px; font-size: 16px; }
+.home-match-save { width: 34px; height: 34px; border: 1px solid rgba(41,37,31,.11); border-radius: 50%; color: #8C74F5; background: rgba(255,255,255,.68); font-size: 22px; line-height: 1; }
+.home-match-save:hover, .home-match-save.is-saved { color: var(--coral); }
+.reference-testimonials .reference-card-footer { height: 52px; padding-left: 72px; background: #F7F1E5; }
+.reference-testimonials .reference-card-footer span::before { left: -72px; width: 62px; background: #F7F1E5; }
+
+@media (max-width: 1100px) {
+  .reference-testimonials { min-height: 830px; }
+  .home-match-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .reference-testimonials { min-height: auto; padding: 18px 14px 48px; }
+  .home-match-grid { grid-template-columns: 1fr; gap: 12px; }
+  .home-match-card { padding: 13px; }
+  .reference-testimonials .reference-card-footer { height: 43px; padding-left: 48px; }
+  .reference-testimonials .reference-card-footer span::before { left: -48px; width: 40px; }
+}
