@@ -1353,7 +1353,7 @@ export function createPlatform({ databasePath = defaultDatabasePath } = {}) {
 
 if (process.argv[1] && import.meta.url === pathToFileURL(resolve(process.argv[1])).href) {
   const platform = createPlatform();
-  platform.server.listen(defaultPort, "127.0.0.1", () => {
+  platform.server.listen(defaultPort, "0.0.0.0", () => {
     console.log(`Huanji server listening on http://127.0.0.1:${defaultPort}`);
   });
   process.on("SIGINT", () => platform.server.close(() => platform.close()));
