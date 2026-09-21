@@ -3,132 +3,132 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="SkillSwap - 你教我一个技能，我教你一个技能。"
-    />
-    <title>SkillSwap | 技能互换平台</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <meta name="theme-color" content="#f3efda" />
+    <title>SkillCircle / 技能互换平台</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="grain" aria-hidden="true"></div>
     <div class="app-shell">
-      <aside class="sidebar" aria-label="主导航">
-        <a class="brand" href="#" data-view="home" aria-label="SkillSwap 主页">
-          <span class="brand-mark" aria-hidden="true"><i data-lucide="repeat-2"></i></span>
-          <span>SkillSwap</span>
-        </a>
-
-        <nav class="main-nav" aria-label="主要功能">
-          <button class="nav-item active" type="button" data-view="discover">
-            <i data-lucide="compass"></i><span>发现</span>
-          </button>
-          <button class="nav-item" type="button" data-view="matches">
-            <i data-lucide="sparkles"></i><span>智能匹配</span><b id="matchNavBadge">6</b>
-          </button>
-          <button class="nav-item" type="button" data-view="messages">
-            <i data-lucide="message-circle"></i><span>消息</span><b class="coral" id="messageNavBadge">2</b>
-          </button>
-          <button class="nav-item" type="button" data-view="schedule">
-            <i data-lucide="calendar-days"></i><span>我的约课</span><b class="amber" id="scheduleNavBadge" hidden>1</b>
-          </button>
-          <button class="nav-item" type="button" data-view="wallet">
-            <i data-lucide="wallet-cards"></i><span>技能钱包</span>
-          </button>
+      <header class="topbar">
+        <button class="brand" data-page="home" aria-label="回到首页">
+          <span class="brand-mark">SKILL</span><span class="brand-slash">&amp;</span><span class="brand-mark">SWAP</span><span class="brand-dot">.</span>
+        </button>
+        <nav class="primary-nav" aria-label="主要导航">
+          <button class="nav-link is-active" data-page="home">首页</button>
+          <button class="nav-link" data-page="discover">发现</button>
+          <button class="nav-link" data-page="me">我</button>
         </nav>
-
-        <div class="sidebar-spacer"></div>
-
-        <section class="exchange-balance" aria-label="技能币余额">
-          <div class="balance-icon"><i data-lucide="coins"></i></div>
-          <div>
-            <span>技能币余额</span>
-            <strong id="sideCoinBalance">128</strong>
-          </div>
-          <button
-            class="icon-button"
-            type="button"
-            data-view="wallet"
-            aria-label="打开技能钱包"
-            title="打开技能钱包"
-          >
-            <i data-lucide="arrow-up-right"></i>
+        <div class="top-actions">
+          <button class="icon-button" id="searchToggle" aria-label="打开搜索">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"></circle><path d="m16 16 4.4 4.4"></path></svg>
           </button>
+          <button class="new-button" id="newPost"><span>＋</span> 发布</button>
+          <button class="mini-avatar" data-page="me" aria-label="打开我的页面"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&q=85" alt="头像" /></button>
+        </div>
+      </header>
+
+      <div class="search-drawer" id="searchDrawer" aria-hidden="true">
+        <label class="search-field">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"></circle><path d="m16 16 4.4 4.4"></path></svg>
+          <input id="searchInput" type="search" placeholder="搜索灵感、创作者或话题" autocomplete="off" />
+          <button id="searchClose" aria-label="关闭搜索">Esc</button>
+        </label>
+        <div class="search-suggestions"><span>热门</span><button>吉他</button><button>Python</button><button>摄影后期</button><button>技能积分</button></div>
+      </div>
+
+      <main>
+        <section class="page is-visible" id="page-home" data-page-view="home">
+          <div class="reference-home">
+            <article class="reference-card reference-testimonials">
+              <div class="reference-card-head"><span>Skills People Share</span><span>Find a good swap for today</span></div>
+              <div class="reference-testimonial-grid">
+                <article class="reference-quote skill-quote" data-category="teach"><img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&amp;fit=crop&amp;w=220&amp;q=88" alt="摄影老师头像" /><p><strong>我能教</strong><br />摄影构图<br /><small>想学 · Python</small><b>94% match</b></p></article>
+                <article class="reference-quote skill-quote" data-category="learn"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;w=220&amp;q=88" alt="Python 学习者头像" /><p><strong>我想学</strong><br />Python 入门<br /><small>可教 · 吉他</small><b>91% match</b></p></article>
+                <article class="reference-quote skill-quote" data-category="teach"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&amp;fit=crop&amp;w=220&amp;q=88" alt="吉他老师头像" /><p><strong>我能教</strong><br />吉他和弦<br /><small>想学 · 日语</small><b>89% match</b></p></article>
+                <article class="reference-quote skill-quote" data-category="learn"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&amp;fit=crop&amp;w=220&amp;q=88" alt="日语学习者头像" /><p><strong>我想学</strong><br />日语会话<br /><small>可教 · 摄影</small><b>87% match</b></p></article>
+                <article class="reference-quote skill-quote" data-category="teach"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&amp;fit=crop&amp;w=220&amp;q=88" alt="烘焙老师头像" /><p><strong>我能教</strong><br />家庭烘焙<br /><small>想学 · 插画</small><b>85% match</b></p></article>
+                <article class="reference-quote skill-quote" data-category="learn"><img src="https://images.unsplash.com/photo-1527980965255-d3b416303d12?auto=format&amp;fit=crop&amp;w=220&amp;q=88" alt="插画学习者头像" /><p><strong>我想学</strong><br />数字插画<br /><small>可教 · 摄影</small><b>83% match</b></p></article>
+              </div>
+              <div class="reference-card-footer"><span>SKILL MATCHES</span><button class="reference-arrow" data-page="discover" aria-label="查看匹配">⟶</button></div>
+            </article>
+
+            <article class="reference-card reference-collab reference-bookings">
+              <div class="reference-collab-top"><span>@skillcircle / MY BOOKINGS</span><span>2026</span></div>
+              <div class="reference-collab-main">
+                <span class="collab-bubble collab-blue">NEXT</span>
+                <h1>我的约课</h1>
+                <span class="collab-bubble collab-green">14 DAYS</span>
+                <p>UPCOMING<br />SKILL SESSIONS</p>
+              </div>
+              <div class="reference-calendar booking-calendar">
+                <div class="thank-you-tab">MAR / 18 - 31</div>
+                <div class="booking-weekdays"><span>周一</span><span>周二</span><span>周三</span><span>周四</span><span>周五</span><span>周六</span><span>周日</span></div>
+                <div class="booking-days">
+                  <div class="booking-day is-today"><strong>18</strong><span class="booking-slot slot-coral"><b>19:30</b> 摄影构图<br />林夏</span></div>
+                  <div class="booking-day"><strong>19</strong></div>
+                  <div class="booking-day"><strong>20</strong><span class="booking-slot slot-blue"><b>20:00</b> Python 入门<br />小林</span></div>
+                  <div class="booking-day"><strong>21</strong></div>
+                  <div class="booking-day"><strong>22</strong></div>
+                  <div class="booking-day"><strong>23</strong></div>
+                  <div class="booking-day"><strong>24</strong><span class="booking-slot slot-green"><b>14:00</b> 家庭烘焙<br />阿梨</span></div>
+                  <div class="booking-day"><strong>25</strong></div>
+                  <div class="booking-day"><strong>26</strong></div>
+                  <div class="booking-day"><strong>27</strong><span class="booking-slot slot-yellow"><b>19:00</b> 日语会话<br />Mia</span></div>
+                  <div class="booking-day"><strong>28</strong></div>
+                  <div class="booking-day"><strong>29</strong></div>
+                  <div class="booking-day"><strong>30</strong><span class="booking-slot slot-coral"><b>20:00</b> 吉他和弦<br />Noah</span></div>
+                  <div class="booking-day"><strong>31</strong></div>
+                </div>
+                <div class="calendar-bottom"><span>skillcircle.space</span><span>我的约课 · 5</span></div>
+              </div>
+            </article>
+          </div>
         </section>
 
-        <button class="profile-switcher" type="button" data-view="profile">
-          <img
-            id="sideProfileAvatar"
-            src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&fit=crop&w=120&q=85"
-            alt="林安"
-          />
-          <span><strong id="sideProfileName">林安</strong><small>查看个人主页</small></span>
-          <i data-lucide="more-horizontal"></i>
-        </button>
-      </aside>
-
-      <section class="workspace">
-        <header class="topbar">
-          <a class="mobile-brand" href="#" data-view="home" aria-label="SkillSwap 主页">
-            <span class="brand-mark"><i data-lucide="repeat-2"></i></span>SkillSwap
-          </a>
-
-          <label class="global-search" for="skillSearch">
-            <i data-lucide="search"></i>
-            <input
-              id="skillSearch"
-              type="search"
-              placeholder="搜索技能、课程或伙伴"
-              autocomplete="off"
-            />
-            <kbd>/</kbd>
-          </label>
-
-          <div class="top-actions">
-            <div class="notification-wrap">
-              <button
-                class="icon-button notification-button"
-                type="button"
-                data-action="toggle-notifications"
-                aria-label="查看通知"
-                title="查看通知"
-              >
-                <i data-lucide="bell"></i><span id="notificationDot"></span>
-              </button>
-              <div class="notification-menu" id="notificationMenu" hidden></div>
+        <section class="page" id="page-discover" data-page-view="discover">
+          <div class="skill-feed-header">
+            <div>
+              <span class="eyebrow"><span class="eyebrow-dot"></span> SKILL SQUARE</span>
+              <h1>Let's learn<br /><em>from each other</em><span class="headline-dot">.</span></h1>
             </div>
-            <button class="primary-button" type="button" data-action="open-skill-form" data-skill-type="teach">
-              <i data-lucide="plus"></i><span>发布技能</span>
-            </button>
           </div>
-        </header>
+          <div class="discovery-controls">
+            <div class="match-search-row"><label class="match-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.3"></circle><path d="m16 16 4.4 4.4"></path></svg><input id="skillSearch" type="search" placeholder="搜索技能、用户或城市" /></label><button class="match-sort" id="sortMatch">推荐排序 <span>↓</span></button></div>
+            <div class="filter-bar skill-feed-filters" role="tablist" aria-label="技能信息流筛选"><button class="filter-chip is-active" data-filter="all">推荐</button><button class="filter-chip" data-filter="teach">我能教</button><button class="filter-chip" data-filter="learn">我想学</button><button class="filter-chip" data-filter="high">高熟悉度</button></div>
+            <div class="skill-topic-row"><button class="topic-chip is-active" data-topic="all">全部技能</button><button class="topic-chip" data-topic="摄影">摄影</button><button class="topic-chip" data-topic="编程">编程</button><button class="topic-chip" data-topic="音乐">音乐</button><button class="topic-chip" data-topic="语言">语言</button><button class="topic-chip" data-topic="生活">生活方式</button><button class="topic-chip" data-topic="设计">设计</button></div>
+          </div>
+          <div class="skill-feed-grid">
+            <article class="skill-feed-card skill-card" data-category="teach" data-match="94" data-topic="摄影" data-search="林夏 摄影构图 Lightroom Python 上海"><div class="skill-post-media"><img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&amp;fit=crop&amp;w=1000&amp;q=88" alt="林夏的摄影构图练习" /><button class="skill-save" aria-label="收藏林夏的技能">♡</button><span class="skill-post-type type-teach">能教</span></div><div class="skill-post-body"><div class="skill-author"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&amp;fit=crop&amp;w=96&amp;q=85" alt="林夏头像" /><div><strong>林夏 Lin Xia</strong><span>上海 · 线上</span></div></div><h3>把日常拍成有故事的样子</h3><div class="skill-brief"><div><span>能教</span><p><img src="assets/tomatoes/tomato-4.png" alt="很熟练" />摄影构图 <b>很熟练</b></p><p><img src="assets/tomatoes/tomato-3.png" alt="比较熟" />Lightroom 后期</p></div><div><span>想学</span><strong>Python 入门</strong></div></div><button class="view-profile" data-profile="linxia">查看档案 <span>→</span></button></div></article>
+            <article class="skill-feed-card skill-card skill-card--learn" data-category="learn" data-match="91" data-topic="编程" data-search="小林 Python Excel 吉他 杭州"><div class="skill-post-media"><img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&amp;fit=crop&amp;w=900&amp;q=88" alt="小林的编程工作台" /><button class="skill-save" aria-label="收藏小林的技能">♡</button><span class="skill-post-type type-learn">想学</span></div><div class="skill-post-body"><div class="skill-author"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;w=96&amp;q=85" alt="小林头像" /><div><strong>小林 Code Lin</strong><span>杭州 · 线上</span></div></div><h3>寻找一起练习 Python 的伙伴</h3><div class="skill-brief"><div><span>能教</span><p><img src="assets/tomatoes/tomato-4.png" alt="很熟练" />Excel 自动化 <b>很熟练</b></p><p><img src="assets/tomatoes/tomato-3.png" alt="比较熟" />Python 基础</p></div><div><span>想学</span><strong>吉他和弦</strong></div></div><button class="view-profile" data-profile="xiaolin">查看档案 <span>→</span></button></div></article>
+            <article class="skill-feed-card skill-card" data-category="teach" data-match="89" data-topic="生活" data-search="阿梨 家庭烘焙 配方开发 数字插画 上海"><div class="skill-post-media"><img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&amp;fit=crop&amp;w=900&amp;q=88" alt="阿梨的烘焙工作台" /><button class="skill-save" aria-label="收藏阿梨的技能">♡</button><span class="skill-post-type type-teach">能教</span></div><div class="skill-post-body"><div class="skill-author"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&amp;fit=crop&amp;w=96&amp;q=85" alt="阿梨头像" /><div><strong>阿梨 A-Li</strong><span>上海 · 线下</span></div></div><h3>周末面包实验室</h3><div class="skill-brief"><div><span>能教</span><p><img src="assets/tomatoes/tomato-5.png" alt="可以教别人" />家庭烘焙 <b>可以教别人</b></p><p><img src="assets/tomatoes/tomato-4.png" alt="很熟练" />配方开发</p></div><div><span>想学</span><strong>数字插画</strong></div></div><button class="view-profile" data-profile="ali">查看档案 <span>→</span></button></div></article>
+            <article class="skill-feed-card skill-card" data-category="teach" data-match="87" data-topic="语言" data-search="Mia 日语会话 日剧听力 摄影 广州"><div class="skill-post-media"><img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&amp;fit=crop&amp;w=900&amp;q=88" alt="Mia 的语言学习笔记" /><button class="skill-save" aria-label="收藏 Mia 的技能">♡</button><span class="skill-post-type type-teach">能教</span></div><div class="skill-post-body"><div class="skill-author"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&amp;fit=crop&amp;w=96&amp;q=85" alt="Mia 头像" /><div><strong>Mia Chen</strong><span>广州 · 线上</span></div></div><h3>把日语练成一种日常</h3><div class="skill-brief"><div><span>能教</span><p><img src="assets/tomatoes/tomato-4.png" alt="很熟练" />日语会话 <b>很熟练</b></p><p><img src="assets/tomatoes/tomato-3.png" alt="比较熟" />日剧听力</p></div><div><span>想学</span><strong>摄影构图</strong></div></div><button class="view-profile" data-profile="mia">查看档案 <span>→</span></button></div></article>
+            <article class="skill-feed-card skill-card skill-card--wide" data-category="teach" data-match="84" data-topic="音乐" data-search="Noah 吉他 作曲 录音 摄影 成都"><div class="skill-post-media"><img src="https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?auto=format&amp;fit=crop&amp;w=1200&amp;q=88" alt="Noah 的吉他练习" /><button class="skill-save" aria-label="收藏 Noah 的技能">♡</button><span class="skill-post-type type-teach">能教</span></div><div class="skill-post-body"><div class="skill-author"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&amp;fit=crop&amp;w=96&amp;q=85" alt="Noah 头像" /><div><strong>Noah Lin</strong><span>成都 · 线上</span></div></div><h3>从第一个和弦开始写一首歌</h3><div class="skill-brief"><div><span>能教</span><p><img src="assets/tomatoes/tomato-4.png" alt="很熟练" />吉他和弦 <b>很熟练</b></p><p><img src="assets/tomatoes/tomato-3.png" alt="比较熟" />歌曲创作</p></div><div><span>想学</span><strong>摄影</strong></div></div><button class="view-profile" data-profile="noah">查看档案 <span>→</span></button></div></article>
+            <article class="skill-feed-card skill-card skill-card--wide skill-card--learn" data-category="high" data-match="96" data-topic="设计" data-search="June 数字插画 字体设计 Python 深圳"><div class="skill-post-media"><img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&amp;fit=crop&amp;w=1200&amp;q=88" alt="June 的插画创作桌面" /><button class="skill-save" aria-label="收藏 June 的技能">♡</button><span class="skill-post-type type-learn">想学</span></div><div class="skill-post-body"><div class="skill-author"><img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&amp;fit=crop&amp;w=96&amp;q=85" alt="June 头像" /><div><strong>June Studio</strong><span>深圳 · 线上</span></div></div><h3>把想象画成可以交换的东西</h3><div class="skill-brief"><div><span>能教</span><p><img src="assets/tomatoes/tomato-5.png" alt="可以教别人" />数字插画 <b>可以教别人</b></p><p><img src="assets/tomatoes/tomato-4.png" alt="很熟练" />字体设计</p></div><div><span>想学</span><strong>Python 数据分析</strong></div></div><button class="view-profile" data-profile="june">查看档案 <span>→</span></button></div></article>
+          </div>
+        </section>
 
-        <main id="viewContent" tabindex="-1"></main>
-      </section>
+        <section class="page" id="page-me" data-page-view="me">
+          <div class="profile-hero layout-grid">
+            <div class="profile-intro"><span class="eyebrow"><span class="eyebrow-dot"></span> MY SKILLS</span><h1>HELLO,<br /><em>SKILL SWAPPER</em><span class="headline-dot">.</span></h1><p>把会的分享出去，也把想学的带回来。</p><button class="edit-button" id="editProfile"><span>✎</span> 编辑资料</button></div>
+            <div class="profile-card"><div class="profile-card-top"><span>@linxia__maybe</span><span>since 2024</span></div><div class="profile-avatar"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=420&q=88" alt="林夏的头像" /><span class="online-dot"></span></div><h2>林夏 Lin Xia</h2><p>摄影爱好者 · Python 学习中</p><div class="profile-stats"><div><strong>3</strong><span>可教</span></div><div><strong>4</strong><span>想学</span></div><div><strong>12</strong><span>已交换</span></div></div><div class="credit-pill">技能积分 <b>18</b></div></div>
+          </div>
+          <div class="me-tabs"><button class="me-tab is-active" data-me-tab="skills">技能档案 <span>7</span></button><button class="me-tab" data-me-tab="bookings">我的约课 <span>3</span></button><button class="me-tab" data-me-tab="requests">交换请求 <span>2</span></button><button class="me-tab" data-me-tab="saved">我的收藏 <span>38</span></button></div>
+          <div class="saved-panel skills-panel" id="skillsPanel">
+            <div class="saved-intro"><span class="section-kicker">MY SKILLS</span><h2>把技能<br /><i>放到桌面上</i></h2><p>清楚地写下你能带来的，也写下你正在寻找的。</p><button class="outline-button" id="profileAddSkill">＋ 添加技能</button></div>
+            <div class="skill-profile-grid"><article class="skill-profile-card skill-teach"><span class="note-index">我能教</span><h3>摄影构图</h3><p>入门到进阶 · 线上<br />周三 / 周末晚上</p><div class="skill-tags"><span>摄影</span><span>后期</span><span>视觉</span></div></article><article class="skill-profile-card skill-learn"><span class="note-index">我想学</span><h3>Python 数据分析</h3><p>希望找到能一起练习的伙伴<br />每周 1 次 · 60 分钟</p><div class="skill-tags"><span>Python</span><span>数据</span><span>远程</span></div></article><article class="skill-history"><span class="note-index">RECENT SWAPS</span><div><strong>摄影构图</strong><span>↔</span><strong>品牌设计</strong><small>已完成 · 4 天前</small></div><div><strong>Lightroom</strong><span>↔</span><strong>日语会话</strong><small>已完成 · 2 周前</small></div></article></div>
+          </div>
+          <div class="posts-panel is-hidden" id="bookingsPanel"><div class="booking-panel"><div class="booking-panel-head"><div><span class="section-kicker">MY BOOKINGS</span><h2>下一次，<i>一起学习</i></h2></div><button class="outline-button" id="bookingCalendarToggle">日历视图 <span>↗</span></button></div><div class="booking-list"><article class="booking-row booking-next"><div class="booking-date"><strong>18</strong><span>周三<br />MAR</span></div><div class="booking-person"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&amp;fit=crop&amp;w=100&amp;q=85" alt="林夏头像" /><div><strong>摄影构图：把日常拍出故事</strong><span>林夏 · 线上 · 19:30 - 20:30</span><small>下一节课 · 还有 2 天</small></div></div><button class="booking-action">查看详情 ↗</button></article><article class="booking-row"><div class="booking-date"><strong>20</strong><span>周五<br />MAR</span></div><div class="booking-person"><img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&amp;fit=crop&amp;w=100&amp;q=85" alt="小林头像" /><div><strong>Python 入门：一起写第一个脚本</strong><span>小林 · 线上 · 20:00 - 21:00</span><small>已确认 · 还有 4 天</small></div></div><button class="booking-action">查看详情 ↗</button></article><article class="booking-row"><div class="booking-date"><strong>24</strong><span>周二<br />MAR</span></div><div class="booking-person"><img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&amp;fit=crop&amp;w=100&amp;q=85" alt="阿梨头像" /><div><strong>家庭烘焙：周末面包实验室</strong><span>阿梨 · 线下 · 14:00 - 16:00</span><small>待确认 · 上海静安</small></div></div><button class="booking-action">查看详情 ↗</button></article></div></div></div>
+          <div class="posts-panel is-hidden" id="requestsPanel"><div class="request-list"><div class="request-list-head"><span class="section-kicker">INBOX</span><button class="text-link">管理请求 <span>↗</span></button></div><article class="request-row"><img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&amp;fit=crop&amp;w=100&amp;q=80" alt="周远头像" /><div><strong>周远想和你交换</strong><p>Python 入门 <b>↔</b> 摄影构图</p><small>匹配度 94% · 12 分钟前</small></div><div class="request-actions"><button class="request-accept">接受</button><button class="request-decline">稍后</button></div></article><article class="request-row"><img src="https://images.unsplash.com/photo-1531123897727-8f129e1688ce?auto=format&amp;fit=crop&amp;w=100&amp;q=80" alt="Mia 头像" /><div><strong>Mia 收藏了你的技能</strong><p>想学 Lightroom 后期</p><small>匹配度 87% · 昨天</small></div><div class="request-actions"><button class="request-swap" data-swap="Lightroom 后期 ↔ 视觉日记">查看</button></div></article></div></div>
+          <div class="about-panel is-hidden" id="savedPanel"><div class="saved-panel"><div class="saved-intro"><span class="section-kicker">SAVED / 038</span><h2>留住那些<br /><i>值得交换的</i></h2><p>收藏别人正在分享的技能，下一次匹配会更快。</p></div><div class="saved-stack"><article class="saved-card saved-card-pink"><div><span>技能 / 021</span><h3>把会的说清楚，<br />匹配自然会发生</h3></div><div class="saved-footer"><span>by Lena Park</span><button class="round-arrow" aria-label="打开收藏">↗</button></div></article><article class="saved-card saved-card-photo"><img src="https://images.unsplash.com/photo-1484101403633-562f891dc89a?auto=format&amp;fit=crop&amp;w=960&amp;q=88" alt="暖色工作空间" /><div class="saved-photo-caption"><span>SPACE / 014</span><strong>留一点空间<br />给新伙伴</strong></div></article><article class="saved-card saved-card-yellow"><span>WORDS / 006</span><p>“分享技能，<br />也分享一点耐心。”</p><div class="saved-footer"><span>by Skill Circle</span><button class="round-arrow" aria-label="打开收藏">↗</button></div></article></div></div></div>
+        </section>
+      </main>
+
     </div>
-
-    <nav class="mobile-nav" aria-label="移动端导航">
-      <button type="button" data-view="discover"><i data-lucide="compass"></i><span>发现</span></button>
-      <button type="button" data-view="matches"><i data-lucide="sparkles"></i><span>匹配</span></button>
-      <button type="button" data-action="open-skill-form" data-skill-type="teach"><i data-lucide="plus-circle"></i><span>发布</span></button>
-      <button type="button" data-view="schedule"><i data-lucide="calendar-days"></i><span>约课</span></button>
-      <button type="button" data-view="profile"><i data-lucide="user-round"></i><span>我的</span></button>
-    </nav>
-
-    <dialog class="app-modal" id="appModal" aria-labelledby="modalTitle">
-      <div id="modalContent"></div>
-    </dialog>
-
-    <aside class="chat-drawer" id="chatDrawer" aria-label="聊天窗口" aria-hidden="true"></aside>
-    <div class="scrim" id="scrim" hidden></div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <div class="modal-backdrop" id="postModal" aria-hidden="true"><div class="post-modal skill-post-modal"><button class="modal-close" id="modalClose" aria-label="关闭">×</button><span class="section-kicker">NEW SKILL POST</span><h2>把技能放出来</h2><div class="post-type-switch"><button class="post-type is-active" data-post-type="teach">我能教</button><button class="post-type" data-post-type="learn">我想学</button></div><div class="post-form-grid"><label>技能名称<input id="skillName" type="text" placeholder="例如：吉他入门" /></label><label>技能分类<select id="skillCategory"><option>音乐</option><option>摄影</option><option>编程</option><option>语言</option><option>生活方式</option><option>设计</option></select></label><label>当前水平<select id="skillLevel"><option>入门</option><option>熟练</option><option>专业</option></select></label><label>想交换的技能<input id="swapSkill" type="text" placeholder="例如：Python 基础" /></label><label>教学方式<select id="skillMode"><option>线上</option><option>线下</option><option>线上 / 线下都可以</option></select></label><label>可用时间<select id="skillTime"><option>工作日晚上</option><option>周末白天</option><option>时间灵活</option></select></label></div><textarea id="postText" placeholder="写一段介绍，让别人知道你会怎么教、想怎么学……"></textarea><div class="modal-actions"><span>发布后会出现在匹配中心</span><button class="new-button" id="publishPost">发布技能 <span>↗</span></button></div></div></div>
+    <div class="modal-backdrop" id="swapModal" aria-hidden="true"><div class="post-modal swap-modal"><button class="modal-close" id="swapClose" aria-label="关闭">×</button><span class="section-kicker">NEW SWAP REQUEST</span><h2>发起一次交换</h2><div class="swap-preview"><span id="swapPreview">摄影构图 ↔ Python 入门</span><b>94% MATCH</b></div><label class="swap-message-label">给对方留一句话<textarea id="swapMessage" placeholder="你好！我想用我的技能和你交换……"></textarea></label><div class="modal-actions"><span>发出后可在我的页面跟进</span><button class="new-button" id="sendSwap">发送请求 <span>↗</span></button></div></div></div>
+    <div class="modal-backdrop" id="profileModal" aria-hidden="true"><div class="post-modal profile-detail-modal"><button class="modal-close" id="profileClose" aria-label="关闭">×</button><div class="profile-detail-head"><img id="profileDetailAvatar" src="" alt="" /><div><span class="section-kicker">SKILL PROFILE</span><h2 id="profileDetailName">技能档案</h2><p id="profileDetailMeta"></p></div></div><p class="profile-detail-bio" id="profileDetailBio"></p><div class="profile-detail-skills" id="profileDetailSkills"></div><div class="profile-detail-footer"><span id="profileDetailSwap"></span><button class="new-button" id="profileDetailAction">发起交换 <span>↗</span></button></div></div></div>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script src="app.js"></script>
