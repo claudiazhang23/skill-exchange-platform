@@ -272,6 +272,7 @@ document.querySelectorAll('.request-decline').forEach((button) => button.addEven
 document.querySelectorAll('.booking-action').forEach((button) => button.addEventListener('click', () => showToast('约课详情即将打开')));
 document.getElementById('bookingCalendarToggle').addEventListener('click', () => showToast('日历视图即将开放'));
 document.getElementById('editProfile').addEventListener('click', () => showToast('资料编辑即将开放'));
+document.querySelector('.history-all')?.addEventListener('click', () => showToast('全部交换记录即将打开'));
 document.addEventListener('keydown', (event) => {
   if (event.key !== 'Escape') return;
   closeSearch();
